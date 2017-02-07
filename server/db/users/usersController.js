@@ -1,6 +1,11 @@
 const User = require('./usersModel.js');
 const jwt = require('jsonwebtoken');
-const dbconfig = require('../dbconfig.js');
+
+//For testing
+// const dbconfig = require('../dbconfig.js');
+
+//for prod
+dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
 
 const controller = {
   signin: function(req, res, next) {
@@ -24,7 +29,7 @@ const controller = {
       return res.status(403).send('Invalid e-mail or password');
     });
   },
-  
+
   create: function(req, res, next) {
     const password = User.generateHash(req.body.password);
     User.findOrCreate({
