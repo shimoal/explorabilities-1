@@ -1,5 +1,5 @@
 var cfg = {
-  myLocalDB: 'explore',
+  myLocalDB: process.env.DATABASE_URL || 'explore',
   myLocalDBRole: '',
   myLocalDBPW: '',
   secret: "secret"
