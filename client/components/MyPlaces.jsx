@@ -53,22 +53,53 @@ export default class MyPlaces extends React.Component {
   }
 
   removeItem(key) {
-    //TODO
-    console.log(key);
-    // delete this.state.itinerary[key];
-    // this.setState({
-    //   itinerary: this.state.itinerary,
-    //   saveMessage: ''
-    // });
+    var places = this.state.currentItinerary.places;
+
+    for (var i = 0; i < places.length; i++) {
+      if (places[i].place_id === key) {
+        places.splice(i, 1);
+      }
+    }
+
+    this.setState({
+      currentItinerary: this.state.currentItinerary,
+      saveMessage: ''
+    });
   }
 
   saveItinerary() {
     //TODO
-    console.log('save clikced');
+    console.log('save clicked');
+
+    console.log(this.state.currentItinerary.places);
+
+                        //     saveItinerary() {
+                        //   const context = this;
+                        //   console.log(this.state.query, 'query');
+
+                        //   axios.post('/itinerary', {
+                        //     token: localStorage.token,
+                        //     itineraryID: this.state.query.place_id,
+                        //     itineraryName: this.state.query.name,
+                        //     placeIDs: Object.keys(this.state.itinerary)
+                        //   })
+                        //   .then(function(res) {
+                        //     if (res.status === 200) {
+                        //       context.setState({
+                        //         saveMessage: 'Saved'
+                        //       });
+                        //       console.log(context.state.saveMessage);
+                        //     }
+                        //   })
+                        //   .catch(function(error) {
+                        //     console.log(error, 'error saving itinerary');
+                        //   });
+                        // }
   }
 
   setCurrent(e) {
     const key = e.target.name;
+    console.log('key is', key);
 
     this.setState({
       currentItinerary: this.state.itineraries[key]
