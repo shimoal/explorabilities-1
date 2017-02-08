@@ -47,6 +47,29 @@ const controller = {
       console.log(err, 'error creating itinerary');
       return res.sendStatus(500);
     });
+  },
+  update: function(req, res, next) {
+
+
+
+    Itinerary.bulkCreate(itineraryItems).then(function() {
+      return Itinerary.update(
+        { status: 'inactive' }, /* set attributes' value */,
+        { where: { subject: 'programming' }} /* where criteria */
+      );
+    }).spread(function(affectedCount, affectedRows) {
+      // .update returns two values in an array, therefore we use .spread
+      // Notice that affectedRows will only be defined in dialects which support returning: true
+
+      // affectedCount will be 2
+      return Itinerary.findAll();
+    }).then(function(itineraries) {
+      console.log(itineraries) 
+    })    
+    .catch(function() {
+      console.log(err, 'error updating itinerary');
+      return res.sendStatus(500);
+    });
   }
 };
 
