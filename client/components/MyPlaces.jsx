@@ -42,6 +42,8 @@ export default class MyPlaces extends React.Component {
             saveMessage={this.state.saveMessage}
             removeItem={this.removeItem.bind(this)}
             saveItinerary={this.saveItinerary.bind(this)}
+            reorderItinerary={this.reorderItinerary.bind(this)}
+            emailItinerary={this.emailItinerary.bind(this)}
           />
           <div id="map"></div>
         </div>
@@ -95,12 +97,22 @@ export default class MyPlaces extends React.Component {
 
   }
 
+  reorderItinerary() {
+    console.log('reorderItinerary was clicked');
+  }
+
+  emailItinerary() {
+    console.log('emailItinerary was clicked!');
+  }
+
   setCurrent(e) {
     const key = e.target.name;
 
     this.setState({
       currentItinerary: this.state.itineraries[key]
     });
+
+
   }
 
   getItineraries() {
@@ -113,6 +125,7 @@ export default class MyPlaces extends React.Component {
     })
     .then(function(res) {
       context.buildItineraries(res.data);
+      console.log('inside get Itineraries', res.data);
     })
     .catch(function(error) {
       console.log(error, 'error retreiving itineraries');

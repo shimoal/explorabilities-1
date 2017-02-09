@@ -30,7 +30,7 @@ const controller = {
     });
 
   },
-  retreive: function(req, res, next) {
+  retrieve: function(req, res, next) {
     const token = req.query.token;
     const payload = jwt.verify(token, dbconfig.secret);
     console.log(payload.id);
@@ -49,12 +49,9 @@ const controller = {
     });
   },
   delete: function(req, res, next) {
-    console.log('inside delete');
-    console.log('req.query: ', req.query);
     const token = req.query.token;
     const placeIDs = req.query.placeIDs;
     const payload = jwt.verify(token, dbconfig.secret);
-
 
     Itinerary.destroy({
       where: {
@@ -63,7 +60,7 @@ const controller = {
       }
     })
     .then(function() {
-      res.sendStatus(202);
+      res.sendStatus(200);
     })
     .catch(function() {
       console.log(err, 'error updating itinerary');
