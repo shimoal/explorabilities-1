@@ -12,6 +12,8 @@ const Signin = (props) => (
       </div>
       <button type="submit" className="btn">Signin</button>
     </form>
+    <div>or</div>
+    <a href="/auth/facebook">facebook</a>
     <div className="error-text">{props.error}</div>
   </div>
 );

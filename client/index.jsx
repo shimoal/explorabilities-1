@@ -28,10 +28,14 @@ const blah = () => { console.log("I'm here to make requireAuth asynchronous!"); 
 //verifies the user's token serverside.
 //check out line 60 in server/db/users/usersController.js
 function requireAuth(nextState, replace, blah) {
+  
+
+  
   axios.get('/users/auth', {
     headers: { token: localStorage.token || null }
   })
   .then((res) => {
+    console.log(res);
     //res.data.user = user email
     //res.data.id = user id
     blah(); //requireauth doesn't exit until I'm called! I do nothing!

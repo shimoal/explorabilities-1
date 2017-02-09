@@ -3,6 +3,7 @@ module.exports = {
     return localStorage.token;
   },
   logout() {
+    console.log(localStorage);
     delete localStorage.token;
   },
   loggedIn() {
