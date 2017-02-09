@@ -99,6 +99,23 @@ export default class MyPlaces extends React.Component {
 
   reorderItinerary() {
     console.log('reorderItinerary was clicked');
+    console.log(this.state.currentItinerary);
+
+    var sortByPlaceName = function(a, b) {
+      if (a.name < b.name) {
+        return -1;     
+      }
+      if (a.name > b.name) {
+        return 1;        
+      }
+
+      return 0;
+    };
+
+    var sortedItinerary = this.state.currentItinerary;
+    sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
+
+    this.setState({currentItinerary: sortedItinerary});
   }
 
   emailItinerary() {
