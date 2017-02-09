@@ -26,16 +26,12 @@ routes.get('/users/signin', userCtrl.signin);
 routes.post('/users/create', userCtrl.create);
 routes.get('/users/auth', userCtrl.authenticate);
 
-
-
 //facebook login
 routes.get('/auth/facebook', userCtrl.facebook);
 
 routes.get('/auth/facebook/callback', 
   userCtrl.facebookCallback, 
   userCtrl.facebookCallback2);
-
-routes.get('/facebookWelcome', userCtrl.facebookWelcome);
 
 routes.get('/itinerary', itineraryCtrl.retreive);
 routes.post('/itinerary', itineraryCtrl.save);

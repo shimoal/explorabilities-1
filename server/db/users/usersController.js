@@ -13,21 +13,11 @@ passport.use(new FacebookStrategy ({
   profileFields: ['id', 'displayName', 'photos', 'email']
 },
   function(accessToken, refreshToken, profile, cb) {
-    // console.log('accessToken', accessToken);
-    // console.log('refreshToken', refreshToken);
     console.log('profile', profile);
-    // console.log('cb', cb);
-
-    // console.log('facebookUsers', facebookUsers);
-    // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
-    if (facebookUsers.indexOf(profile.id) !== -1) {
-      return cb(null, facebookUsers[facebookUsers.indexOf(profile.id)]);
-    }
-    var newUser = profile.id;
-    facebookUsers.push(newUser);
-    cb(null, newUser);
+    console.log('profile.email', profile.emails[0].value);
+    var user = {email: profile.emails[0].value, password: profile.id};
+    console.log('user made by facebook profile ', user);
+    cb(null, user);
   }
 ));
 
@@ -57,6 +47,7 @@ const controller = {
         email: req.query.email
       }
     }).then(function(user) {
+      console.log('signin user', user);
       if (user && User.validatePW(req.query.password, user.password)) {
         //First argument in jwt.sign is the 'payload' which is used when saving an itinerary for the user
         const token = jwt.sign({ user: user.email, id: user.id }, dbconfig.secret, {
@@ -107,7 +98,7 @@ const controller = {
   },
 
   authenticate: function(req, res) {
-    console.log('req********************', req.user);
+    // console.log('------------------------', req.session.user);
     let token = req.headers.token;
     jwt.verify(token, dbconfig.secret, function(err, payload) {
       if (err) {
@@ -125,13 +116,61 @@ const controller = {
     failureRedirect: '/login' }),
 
   facebookCallback2: function(req, res) {
-    console.log('facebookCallback2', 'login success');
+    console.log('facebookCallback2', 'login success', 'req.user', req.user);
     // Successful authentication, redirect home.
-    res.redirect('/facebookWelcome');
-  },
+    var facebook = req.user;
+    User.findOne({
+      where: {
+        email: facebook.email
+      }
+    }).then(function(user) {
+      console.log('facebookCallback2', facebook);
+      if (user) {
+      //First argument in jwt.sign is the 'payload' which is used when saving an itinerary for the user
+        console.log('this user already signed in ', facebook);
+        const token = jwt.sign({ user: facebook.email, id: facebook.id }, dbconfig.secret, {
+          expiresIn: 86400 // expires in 24 hours
+        });
+        res.cookie('token', token);
+        // return res.json({
+        //   success: true,
+        //   token: token
+        // });
+        res.redirect('/explore');
+      } else {
+        console.log('this user is new ', facebook);
+        const password = facebook.password;
+        User.findOrCreate({
+          where: {
+            email: facebook.email
+          },
+          defaults: {
+            password: password
+          }
+        }).spread(function(user, created) {
+          if (created) {
+            console.log('User was successfully created', created);
+            const token = jwt.sign({ user: user.email, id: user.id }, dbconfig.secret, {
+              expiresIn: 86400 // expires in 24 hours
+            });
 
-  facebookWelcome: function(req, res) {
-    res.send('facebookWelcome');
+            // return res.json({
+            //   success: true,
+            //   token: token
+            // });
+            res.cookie('token', token);
+            res.redirect('/explore');
+          } else {
+            return res.sendStatus(500);
+          }
+        }).catch(function(err) {
+          if (err.original.code === '23505') {
+            return res.status(403).send('That email address already exists, please login');
+          }
+          return res.sendStatus(500);
+        });
+      }
+    });
   }
 };
 

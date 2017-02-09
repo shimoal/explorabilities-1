@@ -13,7 +13,8 @@ const Signin = (props) => (
       <button type="submit" className="btn">Signin</button>
     </form>
     <div>or</div>
-    <a href="/auth/facebook">facebook</a>
+    <a href="/auth/facebook" className="loginBtn loginBtn--facebook">facebook login</a>
+    <button onClick={props.facebook}>facebook</button>
     <div className="error-text">{props.error}</div>
   </div>
 );

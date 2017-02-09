@@ -28,25 +28,45 @@ const blah = () => { console.log("I'm here to make requireAuth asynchronous!"); 
 //verifies the user's token serverside.
 //check out line 60 in server/db/users/usersController.js
 function requireAuth(nextState, replace, blah) {
-  
-
-  
-  axios.get('/users/auth', {
-    headers: { token: localStorage.token || null }
-  })
-  .then((res) => {
-    console.log(res);
-    //res.data.user = user email
-    //res.data.id = user id
-    blah(); //requireauth doesn't exit until I'm called! I do nothing!
-  })
-  .catch((err) => {
-    replace({
-      pathname: '/auth/signin',
-      state: {
-        nextPathName: nextState.location.pathname
-      }
-    });
-    blah(); //I also do nothing!
-  });
+  console.log(document.cookie);
+  if (document.cookie) {
+    var token = document.cookie.slice(6);
+    axios.get('/users/auth', {
+      headers: { token: token || null }
+    })
+    .then((res) => {
+      console.log(res);
+      //res.data.user = user email
+      //res.data.id = user id
+      blah(); //requireauth doesn't exit until I'm called! I do nothing!
+    })
+    .catch((err) => {
+      replace({
+        pathname: '/auth/signin',
+        state: {
+          nextPathName: nextState.location.pathname
+        }
+      });
+      blah(); //I also do nothing!
+    });    
+  } else {
+    axios.get('/users/auth', {
+      headers: { token: localStorage.token || null }
+    })
+    .then((res) => {
+      console.log(res);
+      //res.data.user = user email
+      //res.data.id = user id
+      blah(); //requireauth doesn't exit until I'm called! I do nothing!
+    })
+    .catch((err) => {
+      replace({
+        pathname: '/auth/signin',
+        state: {
+          nextPathName: nextState.location.pathname
+        }
+      });
+      blah(); //I also do nothing!
+    });  
+  }
 }
