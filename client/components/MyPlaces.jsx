@@ -59,7 +59,6 @@ export default class MyPlaces extends React.Component {
 
     for (var i = 0; i < places.length; i++) {
       if (places[i].place_id === key) {
-        console.log('removed', places[i].place_id);
         removed.push(places[i].place_id);
         places.splice(i, 1);
       }
@@ -73,13 +72,8 @@ export default class MyPlaces extends React.Component {
   }
 
   saveItinerary() {
-    //TODO
-    console.log('save clicked');
-
-    console.log(this.state.removedPlaces);
 
     const context = this;
-    console.log(this.state.currentItinerary, 'currentItinerary');
 
       axios({method: 'DELETE', url: '/itinerary', params: {
           token: localStorage.token,
@@ -93,20 +87,16 @@ export default class MyPlaces extends React.Component {
           context.setState({
             saveMessage: 'Saved'
           });
-          console.log(context.state.saveMessage);
         }
       })
       .catch(function(error) {
         console.log(error, 'error saving itinerary');
       });
 
-
-
   }
 
   setCurrent(e) {
     const key = e.target.name;
-    console.log('key is', key);
 
     this.setState({
       currentItinerary: this.state.itineraries[key]
@@ -122,7 +112,6 @@ export default class MyPlaces extends React.Component {
       }
     })
     .then(function(res) {
-      console.log(res.data);
       context.buildItineraries(res.data);
     })
     .catch(function(error) {

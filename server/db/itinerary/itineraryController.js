@@ -62,6 +62,9 @@ const controller = {
         userID: payload.id
       }
     })
+    .then(function() {
+      res.sendStatus(202);
+    })
     .catch(function() {
       console.log(err, 'error updating itinerary');
       return res.sendStatus(500);
