@@ -12,7 +12,8 @@ export default class MyPlaces extends React.Component {
         name: '',
         places: []
       },
-      saveMessage: ''
+      saveMessage: '',
+      removedPlaces: []
     };
   }
 
@@ -54,16 +55,20 @@ export default class MyPlaces extends React.Component {
 
   removeItem(key) {
     var places = this.state.currentItinerary.places;
+    var removed = this.state.removedPlaces;
 
     for (var i = 0; i < places.length; i++) {
       if (places[i].place_id === key) {
+        console.log('removed', places[i].place_id);
+        removed.push(places[i].place_id);
         places.splice(i, 1);
       }
     }
 
     this.setState({
       currentItinerary: this.state.currentItinerary,
-      saveMessage: ''
+      saveMessage: '',
+      removedPlaces: removed
     });
   }
 
@@ -71,30 +76,32 @@ export default class MyPlaces extends React.Component {
     //TODO
     console.log('save clicked');
 
-    console.log(this.state.currentItinerary.places);
+    console.log(this.state.removedPlaces);
 
-                        //     saveItinerary() {
-                        //   const context = this;
-                        //   console.log(this.state.query, 'query');
+    const context = this;
+    console.log(this.state.currentItinerary, 'currentItinerary');
 
-                        //   axios.post('/itinerary', {
-                        //     token: localStorage.token,
-                        //     itineraryID: this.state.query.place_id,
-                        //     itineraryName: this.state.query.name,
-                        //     placeIDs: Object.keys(this.state.itinerary)
-                        //   })
-                        //   .then(function(res) {
-                        //     if (res.status === 200) {
-                        //       context.setState({
-                        //         saveMessage: 'Saved'
-                        //       });
-                        //       console.log(context.state.saveMessage);
-                        //     }
-                        //   })
-                        //   .catch(function(error) {
-                        //     console.log(error, 'error saving itinerary');
-                        //   });
-                        // }
+      axios({method: 'DELETE', url: '/itinerary', params: {
+          token: localStorage.token,
+          itineraryID: this.state.currentItinerary.place_id,
+          itineraryName: this.state.currentItinerary.name,
+          placeIDs: this.state.removedPlaces
+        }
+      })
+      .then(function(res) {
+        if (res.status === 200) {
+          context.setState({
+            saveMessage: 'Saved'
+          });
+          console.log(context.state.saveMessage);
+        }
+      })
+      .catch(function(error) {
+        console.log(error, 'error saving itinerary');
+      });
+
+
+
   }
 
   setCurrent(e) {

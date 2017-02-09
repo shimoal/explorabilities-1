@@ -9,7 +9,7 @@ const ItineraryList = (props)  => {
     headerText += ' for ' + props.query.name;
   }
 
-  if (Object.keys(props.list).length > 0 && props.saveMessage.length === 0) {
+  if (props.saveMessage.length === 0) {
     saveButton = <button className="save-itinerary" onClick={props.saveItinerary}>Save Itinerary</button>;
   }
 
