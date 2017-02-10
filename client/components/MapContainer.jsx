@@ -38,9 +38,9 @@ export default class MapContainer extends React.Component {
       const script = window.document.createElement('script');
       script.src = 'http://maps.googleapis.com/maps/api/js?key=AIzaSyCBb0bm-_wNIf3oDMi-5PN_zeOf1bRWstI&libraries=places&callback=initMap';
       ref.parentNode.insertBefore(script, ref);
-      script.onload = function () {
-        this.remove();
-      };
+      // script.onload = function () {
+      //   this.remove();
+      // };
     })();
 
     /* ################### Map Init ################### */

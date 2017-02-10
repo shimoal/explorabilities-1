@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import bluebird from 'bluebird';
 import ItineraryList from './itineraryList.jsx';
+import pathFuncs from './../pathFinder/findPath.js';
 
 export default class MyPlaces extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ export default class MyPlaces extends React.Component {
             emailItinerary={this.emailItinerary.bind(this)}
           />
           <div id="map"></div>
+          <div id="map2"></div>
         </div>
       </div>
     );
@@ -116,6 +118,9 @@ export default class MyPlaces extends React.Component {
     sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
 
     this.setState({currentItinerary: sortedItinerary});
+
+    pathFuncs.findPath(sortedItinerary.places);
+
   }
 
   emailItinerary() {
@@ -142,7 +147,6 @@ export default class MyPlaces extends React.Component {
     })
     .then(function(res) {
       context.buildItineraries(res.data);
-      console.log('inside get Itineraries', res.data);
     })
     .catch(function(error) {
       console.log(error, 'error retreiving itineraries');
@@ -183,7 +187,6 @@ export default class MyPlaces extends React.Component {
               currentItinerary: context.state.itineraries[Object.keys(context.state.itineraries)[0]]
             });
 
-            console.log(context.state, 'state');
           }
         });
       });
