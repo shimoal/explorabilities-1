@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import bluebird from 'bluebird';
 import ItineraryList from './itineraryList.jsx';
-import pathFuncs from './../pathFinder/findPath.js';
 
 export default class MyPlaces extends React.Component {
   constructor(props) {
@@ -103,6 +102,11 @@ export default class MyPlaces extends React.Component {
     console.log('reorderItinerary was clicked');
     console.log(this.state.currentItinerary);
 
+
+    axios.get('/orderedPlaces').then( function (response) {
+      console.log('received response!', response);
+    }).catch( function (err) {console.log(err);});
+
     var sortByPlaceName = function(a, b) {
       if (a.name < b.name) {
         return -1;     
@@ -118,8 +122,6 @@ export default class MyPlaces extends React.Component {
     sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
 
     this.setState({currentItinerary: sortedItinerary});
-
-    pathFuncs.findPath(sortedItinerary.places);
 
   }
 
