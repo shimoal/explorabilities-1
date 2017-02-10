@@ -14,8 +14,10 @@ routes.get('/users/signin', userCtrl.signin);
 routes.post('/users/create', userCtrl.create);
 routes.get('/users/auth', userCtrl.authenticate);
 
-routes.get('/itinerary', itineraryCtrl.retreive);
+routes.get('/itinerary', itineraryCtrl.retrieve);
 routes.post('/itinerary', itineraryCtrl.save);
+
+routes.delete('/itinerary', function(req, res, next){console.log('inisde anon func'); next();}, itineraryCtrl.delete);
 
 routes.get('/*', function(req, res) {
   res.redirect('/');

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import bluebird from 'bluebird';
 import ItineraryList from './itineraryList.jsx';
+import pathFuncs from './../pathFinder/findPath.js';
 
 export default class MyPlaces extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class MyPlaces extends React.Component {
         name: '',
         places: []
       },
-      saveMessage: ''
+      saveMessage: '',
+      removedPlaces: []
     };
   }
 
@@ -41,8 +43,11 @@ export default class MyPlaces extends React.Component {
             saveMessage={this.state.saveMessage}
             removeItem={this.removeItem.bind(this)}
             saveItinerary={this.saveItinerary.bind(this)}
+            reorderItinerary={this.reorderItinerary.bind(this)}
+            emailItinerary={this.emailItinerary.bind(this)}
           />
           <div id="map"></div>
+          <div id="map2"></div>
         </div>
       </div>
     );
@@ -53,18 +58,73 @@ export default class MyPlaces extends React.Component {
   }
 
   removeItem(key) {
-    //TODO
-    console.log(key);
-    // delete this.state.itinerary[key];
-    // this.setState({
-    //   itinerary: this.state.itinerary,
-    //   saveMessage: ''
-    // });
+    var places = this.state.currentItinerary.places;
+    var removed = this.state.removedPlaces;
+
+    for (var i = 0; i < places.length; i++) {
+      if (places[i].place_id === key) {
+        removed.push(places[i].place_id);
+        places.splice(i, 1);
+      }
+    }
+
+    this.setState({
+      currentItinerary: this.state.currentItinerary,
+      saveMessage: '',
+      removedPlaces: removed
+    });
   }
 
   saveItinerary() {
-    //TODO
-    console.log('save clikced');
+
+    const context = this;
+
+      axios({method: 'DELETE', url: '/itinerary', params: {
+          token: localStorage.token,
+          itineraryID: this.state.currentItinerary.place_id,
+          itineraryName: this.state.currentItinerary.name,
+          placeIDs: this.state.removedPlaces
+        }
+      })
+      .then(function(res) {
+        if (res.status === 200) {
+          context.setState({
+            saveMessage: 'Saved'
+          });
+        }
+      })
+      .catch(function(error) {
+        console.log(error, 'error saving itinerary');
+      });
+
+  }
+
+  reorderItinerary() {
+    console.log('reorderItinerary was clicked');
+    console.log(this.state.currentItinerary);
+
+    var sortByPlaceName = function(a, b) {
+      if (a.name < b.name) {
+        return -1;     
+      }
+      if (a.name > b.name) {
+        return 1;        
+      }
+
+      return 0;
+    };
+
+    var sortedItinerary = this.state.currentItinerary;
+    sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
+
+    this.setState({currentItinerary: sortedItinerary});
+
+    pathFuncs.findPath(sortedItinerary.places);
+
+  }
+
+  emailItinerary() {
+    console.log('emailItinerary was clicked!');
   }
 
   setCurrent(e) {
@@ -73,6 +133,8 @@ export default class MyPlaces extends React.Component {
     this.setState({
       currentItinerary: this.state.itineraries[key]
     });
+
+
   }
 
   getItineraries() {
@@ -84,7 +146,6 @@ export default class MyPlaces extends React.Component {
       }
     })
     .then(function(res) {
-      console.log(res.data);
       context.buildItineraries(res.data);
     })
     .catch(function(error) {
@@ -126,7 +187,6 @@ export default class MyPlaces extends React.Component {
               currentItinerary: context.state.itineraries[Object.keys(context.state.itineraries)[0]]
             });
 
-            console.log(context.state, 'state');
           }
         });
       });
