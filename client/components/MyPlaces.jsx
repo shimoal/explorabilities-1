@@ -10,9 +10,11 @@ export default class MyPlaces extends React.Component {
       itineraries: {},
       currentItinerary: {
         name: '',
-        places: []
+        places: [],
+        coordinates: []
       },
-      saveMessage: ''
+      saveMessage: '',
+      removedPlaces: []
     };
   }
 
@@ -41,8 +43,11 @@ export default class MyPlaces extends React.Component {
             saveMessage={this.state.saveMessage}
             removeItem={this.removeItem.bind(this)}
             saveItinerary={this.saveItinerary.bind(this)}
+            reorderItinerary={this.reorderItinerary.bind(this)}
+            emailItinerary={this.emailItinerary.bind(this)}
           />
           <div id="map"></div>
+          <div id="map2"></div>
         </div>
       </div>
     );
@@ -53,18 +58,71 @@ export default class MyPlaces extends React.Component {
   }
 
   removeItem(key) {
-    //TODO
-    console.log(key);
-    // delete this.state.itinerary[key];
-    // this.setState({
-    //   itinerary: this.state.itinerary,
-    //   saveMessage: ''
-    // });
+    var places = this.state.currentItinerary.places;
+    var removed = this.state.removedPlaces;
+
+    for (var i = 0; i < places.length; i++) {
+      if (places[i].place_id === key) {
+        removed.push(places[i].place_id);
+        places.splice(i, 1);
+      }
+    }
+
+    this.setState({
+      currentItinerary: this.state.currentItinerary,
+      saveMessage: '',
+      removedPlaces: removed
+    });
   }
 
   saveItinerary() {
-    //TODO
-    console.log('save clikced');
+
+    const context = this;
+
+      axios({method: 'DELETE', url: '/itinerary', params: {
+          token: localStorage.token,
+          itineraryID: this.state.currentItinerary.place_id,
+          itineraryName: this.state.currentItinerary.name,
+          placeIDs: this.state.removedPlaces
+        }
+      })
+      .then(function(res) {
+        if (res.status === 200) {
+          context.setState({
+            saveMessage: 'Saved'
+          });
+        }
+      })
+      .catch(function(error) {
+        console.log(error, 'error saving itinerary');
+      });
+
+  }
+
+  reorderItinerary() {
+
+    const context = this;
+    const name = this.state.currentItinerary.name;
+    const convertToCoordinates = this.convertToCoordinates;
+
+    axios.get('/orderedPlaces', {
+      params: {
+        places: context.state.currentItinerary.places
+      }
+    }).then( function (response) {
+      console.log('received response!', response);
+
+      var newItinerary = {name: name, places: response.data, coodinates: convertToCoordinates(response.data)};
+      context.setState({
+        currentItinerary: newItinerary
+      });
+
+    }).catch( function (err) {console.log(err);});
+
+  }
+
+  emailItinerary() {
+    console.log('emailItinerary was clicked!');
   }
 
   setCurrent(e) {
@@ -72,6 +130,15 @@ export default class MyPlaces extends React.Component {
 
     this.setState({
       currentItinerary: this.state.itineraries[key]
+    });
+  }
+
+  convertToCoordinates(places) {
+    return places.map(function(place) {
+      return { 
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng
+      };
     });
   }
 
@@ -84,7 +151,6 @@ export default class MyPlaces extends React.Component {
       }
     })
     .then(function(res) {
-      console.log(res.data);
       context.buildItineraries(res.data);
     })
     .catch(function(error) {
@@ -126,7 +192,6 @@ export default class MyPlaces extends React.Component {
               currentItinerary: context.state.itineraries[Object.keys(context.state.itineraries)[0]]
             });
 
-            console.log(context.state, 'state');
           }
         });
       });

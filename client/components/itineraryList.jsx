@@ -4,19 +4,30 @@ import ItineraryListItem from './itineraryListItem.jsx';
 const ItineraryList = (props)  => {
   let headerText = 'Itinerary';
   let saveButton = '';
+  let reorderButton = '';
+  let emailButton = '';
 
   if (props.query.name) {
     headerText += ' for ' + props.query.name;
   }
 
-  if (Object.keys(props.list).length > 0 && props.saveMessage.length === 0) {
+  if (props.saveMessage.length === 0) {
     saveButton = <button className="save-itinerary" onClick={props.saveItinerary}>Save Itinerary</button>;
+  }
+
+  if (props) {
+    reorderButton = <button className="reorder" onClick={props.reorderItinerary}>Reorder Itinerary</button>;
+  }
+
+  if (props) {
+    emailButton = <button className="email" onClick={props.emailItinerary}>Email Itinerary</button>;
   }
 
   return (
     <div id="itinerary">
       <div className="clearfix">
         <h3 className="itineraryHeader">{headerText}</h3>
+        {reorderButton}
         {saveButton}
         <p className="save-itinerary save-text">{props.saveMessage}</p>
       </div>
@@ -30,6 +41,7 @@ const ItineraryList = (props)  => {
             />
           ))}
       </ul>
+      {emailButton}
     </div>
   );
 };

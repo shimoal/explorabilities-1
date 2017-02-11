@@ -1,4 +1,7 @@
+var webpack = require('webpack');
+
 const config = {
+  devtool: 'inline-source-map',
   entry: './client/index.jsx',
   output: {
     filename: 'bundle.js',
@@ -9,10 +12,7 @@ const config = {
       {
         test: /\.jsx$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        query: {
-          presets: ["react", "es2015"]
-        }
+        loaders: [ 'babel?presets[]=react,presets[]=es2015']
       }
     ]
   }

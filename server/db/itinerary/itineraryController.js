@@ -30,7 +30,7 @@ const controller = {
     });
 
   },
-  retreive: function(req, res, next) {
+  retrieve: function(req, res, next) {
     const token = req.query.token;
     const payload = jwt.verify(token, dbconfig.secret);
     console.log(payload.id);
@@ -45,6 +45,25 @@ const controller = {
     })
     .catch(function(err) {
       console.log(err, 'error creating itinerary');
+      return res.sendStatus(500);
+    });
+  },
+  delete: function(req, res, next) {
+    const token = req.query.token;
+    const placeIDs = req.query.placeIDs;
+    const payload = jwt.verify(token, dbconfig.secret);
+
+    Itinerary.destroy({
+      where: {
+        placeID: placeIDs,
+        userID: payload.id
+      }
+    })
+    .then(function() {
+      res.sendStatus(200);
+    })
+    .catch(function() {
+      console.log(err, 'error updating itinerary');
       return res.sendStatus(500);
     });
   }
