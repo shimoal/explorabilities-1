@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import bluebird from 'bluebird';
 import ItineraryList from './itineraryList.jsx';
-import pathFuncs from './../pathFinder/findPath.js';
 
 export default class MyPlaces extends React.Component {
   constructor(props) {
@@ -100,26 +99,42 @@ export default class MyPlaces extends React.Component {
   }
 
   reorderItinerary() {
-    console.log('reorderItinerary was clicked');
-    console.log(this.state.currentItinerary);
 
-    var sortByPlaceName = function(a, b) {
-      if (a.name < b.name) {
-        return -1;     
+    const context = this;
+    const name = this.state.currentItinerary.name;
+
+    axios.get('/orderedPlaces', {
+      params: {
+        places: context.state.currentItinerary.places
       }
-      if (a.name > b.name) {
-        return 1;        
-      }
+    }).then( function (response) {
+      console.log('received response!', response);
 
-      return 0;
-    };
+      var newItinerary = {name: name, places: response.data};
+      context.setState({
+        currentItinerary: newItinerary
+      });
 
-    var sortedItinerary = this.state.currentItinerary;
-    sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
+    }).catch( function (err) {console.log(err);});
 
-    this.setState({currentItinerary: sortedItinerary});
 
-    pathFuncs.findPath(sortedItinerary.places);
+
+    //SORTING FUNCTION TO SORT BY NAME:
+    // var sortByPlaceName = function(a, b) {
+    //   if (a.name < b.name) {
+    //     return -1;     
+    //   }
+    //   if (a.name > b.name) {
+    //     return 1;        
+    //   }
+
+    //   return 0;
+    // };
+
+    // var sortedItinerary = this.state.currentItinerary;
+    // sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
+
+    // this.setState({currentItinerary: sortedItinerary});
 
   }
 
