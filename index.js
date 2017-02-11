@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(function(req, res, next) {
-  console.log('Request of type: ' + req.method + ', to: ' + req.url);
+  // console.log('Request of type: ' + req.method + ', to: ' + req.url);
   next();
 });
 

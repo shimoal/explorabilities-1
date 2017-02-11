@@ -124,7 +124,22 @@ export default class MyPlaces extends React.Component {
   }
 
   emailItinerary() {
-    console.log('emailItinerary was clicked!');
+    axios({
+      method: 'POST', 
+      url: '/itinerary/mail', 
+      params: {
+          itineraryPlaces: this.state.currentItinerary.places,
+          itineraryName: this.state.currentItinerary.name
+        }
+      })
+      .then(function(res) {
+        if (res.status === 200) {
+          console.log('Notify email sent', res);
+        }
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
   }
 
   setCurrent(e) {
@@ -133,8 +148,6 @@ export default class MyPlaces extends React.Component {
     this.setState({
       currentItinerary: this.state.itineraries[key]
     });
-
-
   }
 
   getItineraries() {

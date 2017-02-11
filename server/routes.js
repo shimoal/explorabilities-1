@@ -16,8 +16,9 @@ routes.get('/users/auth', userCtrl.authenticate);
 
 routes.get('/itinerary', itineraryCtrl.retrieve);
 routes.post('/itinerary', itineraryCtrl.save);
+routes.post('/itinerary/mail', itineraryCtrl.sendMail);
 
-routes.delete('/itinerary', function(req, res, next){console.log('inisde anon func'); next();}, itineraryCtrl.delete);
+routes.delete('/itinerary', itineraryCtrl.delete);
 
 routes.get('/*', function(req, res) {
   res.redirect('/');

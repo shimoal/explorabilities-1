@@ -11,3 +11,4 @@ public/bundle.js
 
 ## API keys ##
 client/config/keys.js
+sendgrid.env
