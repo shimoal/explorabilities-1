@@ -27,7 +27,7 @@ export default class MyPlaces extends React.Component {
               </div>
               <div id="myplace-itineraries">
                 {Object.keys(this.state.itineraries).map((key) => (
-                  <button onClick={this.setCurrent.bind(this)} name={key}>
+                  <button onClick={this.setCurrent.bind(this)} name={key} key={key}>
                     {this.state.itineraries[key].name}
                   </button>
                 ))}
@@ -77,7 +77,7 @@ export default class MyPlaces extends React.Component {
 
   getItineraries() {
     const context = this;
-
+    console.log('getItineraries');
     axios.get('/itinerary', {
       params: {
         token: localStorage.token
@@ -90,6 +90,10 @@ export default class MyPlaces extends React.Component {
     .catch(function(error) {
       console.log(error, 'error retreiving itineraries');
     });
+  }
+
+  drawMark() {
+    console.log(this.state.itineraries);
   }
 
   buildItineraries(data) {
@@ -125,9 +129,8 @@ export default class MyPlaces extends React.Component {
             context.setState({
               currentItinerary: context.state.itineraries[Object.keys(context.state.itineraries)[0]]
             });
-
-            console.log(context.state, 'state');
           }
+          context.drawMark();
         });
       });
     }
@@ -139,8 +142,10 @@ export default class MyPlaces extends React.Component {
 
     window.initMap = initMap;
     const ref = window.document.getElementsByTagName('script')[0];
+    // console.log('ref', ref);
     const script = window.document.createElement('script');
     script.src = url;
+    // console.log('parentNode', ref.parentNode);
     ref.parentNode.insertBefore(script, ref);
     script.onload = function () {
       this.remove();
