@@ -112,7 +112,7 @@ export default class MyPlaces extends React.Component {
     }).then( function (response) {
       console.log('received response!', response);
 
-      var newItinerary = {name: name, places: response.data, coodinates: convertToCoordinates(response.data)};
+      var newItinerary = {name: name, places: response.data, coordinates: convertToCoordinates(response.data)};
       context.setState({
         currentItinerary: newItinerary
       });
