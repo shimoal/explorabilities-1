@@ -18,6 +18,7 @@ routes.get('/users/auth', userCtrl.authenticate);
 routes.get('/itinerary', itineraryCtrl.retrieve);
 routes.post('/itinerary', itineraryCtrl.save);
 routes.delete('/itinerary', itineraryCtrl.delete);
+routes.post('/itinerary/mail', itineraryCtrl.sendMail);
 
 routes.get('/orderedPlaces', googleDirections.getOrderedPlaces);
 

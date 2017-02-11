@@ -12,7 +12,7 @@ const config = {
       {
         test: /\.jsx$/,
         exclude: /(node_modules|bower_components)/,
-        loaders: [ 'babel?presets[]=react,presets[]=es2015']
+        loaders: [ 'babel-loader?presets[]=react,presets[]=es2015']
       }
     ]
   }

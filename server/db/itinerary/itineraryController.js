@@ -1,6 +1,8 @@
 const Itinerary = require('./itineraryModel.js');
 const jwt = require('jsonwebtoken');
 const dbconfig = require('../dbconfig.js');
+const mail = require('../../../sendgrid.js');
+const util = require('util');
 
 const controller = {
   save: function(req, res, next) {
@@ -63,9 +65,12 @@ const controller = {
       res.sendStatus(200);
     })
     .catch(function() {
-      console.log(err, 'error updating itinerary');
+      console.log('error updating itinerary');
       return res.sendStatus(500);
     });
+  },
+  sendMail: function(req, res, next) {
+    mail.sendMail(req, res, next);
   }
 };
 
