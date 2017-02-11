@@ -1,6 +1,6 @@
 const User = require('./usersModel.js');
 const jwt = require('jsonwebtoken');
-const dbconfig = require('../dbconfig.js');
+
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 
@@ -39,6 +39,14 @@ passport.deserializeUser(function(id, done) {
 
 
 
+
+//For testing
+// const dbconfig = require('../dbconfig.js');
+
+//for prod
+const dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
+
+
 const controller = {
   signin: function(req, res, next) {
     //Retrieve user from DB and authenticate
@@ -65,6 +73,7 @@ const controller = {
 
   facebook: passport.authenticate('facebook'),
   
+
   create: function(req, res, next) {
     const password = User.generateHash(req.body.password);
     User.findOrCreate({
