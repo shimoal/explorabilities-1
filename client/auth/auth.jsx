@@ -12,6 +12,7 @@ export default class Auth extends React.Component {
     this.handleSignin = this.handleSignin.bind(this);
     this.handleSignup = this.handleSignup.bind(this);
     this.routeToExplore = this.routeToExplore.bind(this);
+    this.facebook = this.facebook.bind(this);
     this.setError = this.setError.bind(this);
   }
 
@@ -26,7 +27,8 @@ export default class Auth extends React.Component {
             {React.cloneElement(this.props.children, {
               error: this.state.error,
               signin: this.handleSignin,
-              signup: this.handleSignup
+              signup: this.handleSignup,
+              facebook: this.facebook
             })}
           </div>
           <div id="authNav">
@@ -57,6 +59,14 @@ export default class Auth extends React.Component {
     .catch(this.setError);
   }
 
+  facebook (e) {
+    e.preventDefault();
+    axios.get('/auth/facebook');
+    // .then(function(res) {
+    //   console.log(res);
+    // });
+  }
+
   handleSignup (e) {
     e.preventDefault();
     const email = e.target.querySelector('[name="email"]').value;
@@ -78,6 +88,7 @@ export default class Auth extends React.Component {
   }
 
   routeToExplore (res) {
+    console.log(res.data);
     if (res.data.success) {
       localStorage.token = res.data.token;
       this.props.router.push('/explore');

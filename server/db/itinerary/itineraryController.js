@@ -2,7 +2,12 @@ const Itinerary = require('./itineraryModel.js');
 const jwt = require('jsonwebtoken');
 const dbconfig = require('../dbconfig.js');
 const mail = require('../../../sendgrid.js');
-const util = require('util');
+
+//For testing
+// const dbconfig = require('../dbconfig.js');
+
+//for prod
+dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
 
 const controller = {
   save: function(req, res, next) {
@@ -11,6 +16,7 @@ const controller = {
     const itineraryID = req.body.itineraryID;
     const itineraryName = req.body.itineraryName;
     const payload = jwt.verify(token, dbconfig.secret);
+    console.log('payload', payload);
     const itineraryItems = [];
 
     placeIDs.forEach(function(placeID) {

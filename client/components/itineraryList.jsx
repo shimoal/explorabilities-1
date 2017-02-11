@@ -1,7 +1,7 @@
 import React from 'react';
 import ItineraryListItem from './itineraryListItem.jsx';
 
-const ItineraryList = (props)  => {
+const ItineraryList = (props) => {
   let headerText = 'Itinerary';
   let saveButton = '';
   let reorderButton = '';
