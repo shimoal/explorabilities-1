@@ -10,6 +10,3 @@ compiled/
 
 ## API keys ##
 client/config/keys.js
-
-
-server/db/dbconfig.js
