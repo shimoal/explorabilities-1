@@ -128,7 +128,7 @@ const controller = {
       if (user) {
       //First argument in jwt.sign is the 'payload' which is used when saving an itinerary for the user
         console.log('this user already signed in ', facebook);
-        const token = jwt.sign({ user: facebook.email, id: facebook.id }, dbconfig.secret, {
+        const token = jwt.sign({ user: user.email, id: user.id }, dbconfig.secret, {
           expiresIn: 86400 // expires in 24 hours
         });
         res.cookie('token', token);
