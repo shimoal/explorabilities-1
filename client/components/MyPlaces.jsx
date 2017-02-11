@@ -10,7 +10,8 @@ export default class MyPlaces extends React.Component {
       itineraries: {},
       currentItinerary: {
         name: '',
-        places: []
+        places: [],
+        coordinates: []
       },
       saveMessage: '',
       removedPlaces: []
@@ -102,6 +103,7 @@ export default class MyPlaces extends React.Component {
 
     const context = this;
     const name = this.state.currentItinerary.name;
+    const convertToCoordinates = this.convertToCoordinates;
 
     axios.get('/orderedPlaces', {
       params: {
@@ -110,31 +112,12 @@ export default class MyPlaces extends React.Component {
     }).then( function (response) {
       console.log('received response!', response);
 
-      var newItinerary = {name: name, places: response.data};
+      var newItinerary = {name: name, places: response.data, coodinates: convertToCoordinates(response.data)};
       context.setState({
         currentItinerary: newItinerary
       });
 
     }).catch( function (err) {console.log(err);});
-
-
-
-    //SORTING FUNCTION TO SORT BY NAME:
-    // var sortByPlaceName = function(a, b) {
-    //   if (a.name < b.name) {
-    //     return -1;     
-    //   }
-    //   if (a.name > b.name) {
-    //     return 1;        
-    //   }
-
-    //   return 0;
-    // };
-
-    // var sortedItinerary = this.state.currentItinerary;
-    // sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
-
-    // this.setState({currentItinerary: sortedItinerary});
 
   }
 
@@ -148,8 +131,15 @@ export default class MyPlaces extends React.Component {
     this.setState({
       currentItinerary: this.state.itineraries[key]
     });
+  }
 
-
+  convertToCoordinates(places) {
+    return places.map(function(place) {
+      return { 
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng
+      };
+    });
   }
 
   getItineraries() {

@@ -12,13 +12,10 @@ const config = {
       {
         test: /\.jsx$/,
         exclude: /(node_modules|bower_components)/,
-        loaders: [ 'react-hot', 'babel?presets[]=react,presets[]=es2015']
+        loaders: [ 'babel?presets[]=react,presets[]=es2015']
       }
     ]
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ]
+  }
 };
 
 module.exports = config;
