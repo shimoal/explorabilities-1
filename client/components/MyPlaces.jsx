@@ -100,10 +100,25 @@ export default class MyPlaces extends React.Component {
 
   reorderItinerary() {
     console.log('reorderItinerary was clicked');
-    console.log(this.state.currentItinerary);
+    console.log(this.state.currentItinerary.places);
 
 
-    axios.get('/orderedPlaces').then( function (response) {
+    var placeIds = this.state.currentItinerary.places.map(function(place) {
+      // var lat = place.geometry.location.lat();
+      // var lng = place.geometry.location.lng();
+      // return [lat, lng];
+      return place.place_id;
+    });
+
+    console.log(placeIds);
+
+
+    axios.get('/orderedPlaces', {
+      params: {
+        places: placeIds
+      }
+
+    }).then( function (response) {
       console.log('received response!', response);
     }).catch( function (err) {console.log(err);});
 
