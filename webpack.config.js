@@ -15,10 +15,7 @@ const config = {
         loaders: [ 'babel-loader?presets[]=react,presets[]=es2015']
       }
     ]
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ]
+  }
 };
 
 module.exports = config;

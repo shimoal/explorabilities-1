@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import bluebird from 'bluebird';
 import ItineraryList from './itineraryList.jsx';
-import pathFuncs from './../pathFinder/findPath.js';
 
 export default class MyPlaces extends React.Component {
   constructor(props) {
@@ -11,7 +10,8 @@ export default class MyPlaces extends React.Component {
       itineraries: {},
       currentItinerary: {
         name: '',
-        places: []
+        places: [],
+        coordinates: []
       },
       saveMessage: '',
       removedPlaces: []
@@ -100,26 +100,24 @@ export default class MyPlaces extends React.Component {
   }
 
   reorderItinerary() {
-    console.log('reorderItinerary was clicked');
-    console.log(this.state.currentItinerary);
 
-    var sortByPlaceName = function(a, b) {
-      if (a.name < b.name) {
-        return -1;     
+    const context = this;
+    const name = this.state.currentItinerary.name;
+    const convertToCoordinates = this.convertToCoordinates;
+
+    axios.get('/orderedPlaces', {
+      params: {
+        places: context.state.currentItinerary.places
       }
-      if (a.name > b.name) {
-        return 1;        
-      }
+    }).then( function (response) {
+      console.log('received response!', response);
 
-      return 0;
-    };
+      var newItinerary = {name: name, places: response.data, coodinates: convertToCoordinates(response.data)};
+      context.setState({
+        currentItinerary: newItinerary
+      });
 
-    var sortedItinerary = this.state.currentItinerary;
-    sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
-
-    this.setState({currentItinerary: sortedItinerary});
-
-    pathFuncs.findPath(sortedItinerary.places);
+    }).catch( function (err) {console.log(err);});
 
   }
 
@@ -147,6 +145,15 @@ export default class MyPlaces extends React.Component {
 
     this.setState({
       currentItinerary: this.state.itineraries[key]
+    });
+  }
+
+  convertToCoordinates(places) {
+    return places.map(function(place) {
+      return { 
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng
+      };
     });
   }
 
