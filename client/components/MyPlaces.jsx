@@ -99,44 +99,42 @@ export default class MyPlaces extends React.Component {
   }
 
   reorderItinerary() {
-    console.log('reorderItinerary was clicked');
-    console.log(this.state.currentItinerary.places);
 
-
-    var placeIds = this.state.currentItinerary.places.map(function(place) {
-      // var lat = place.geometry.location.lat();
-      // var lng = place.geometry.location.lng();
-      // return [lat, lng];
-      return place.place_id;
-    });
-
-    console.log(placeIds);
-
+    const context = this;
+    const name = this.state.currentItinerary.name;
 
     axios.get('/orderedPlaces', {
       params: {
-        places: placeIds
+        places: context.state.currentItinerary.places
       }
-
     }).then( function (response) {
       console.log('received response!', response);
+
+      var newItinerary = {name: name, places: response.data};
+      context.setState({
+        currentItinerary: newItinerary
+      });
+
     }).catch( function (err) {console.log(err);});
 
-    var sortByPlaceName = function(a, b) {
-      if (a.name < b.name) {
-        return -1;     
-      }
-      if (a.name > b.name) {
-        return 1;        
-      }
 
-      return 0;
-    };
 
-    var sortedItinerary = this.state.currentItinerary;
-    sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
+    //SORTING FUNCTION TO SORT BY NAME:
+    // var sortByPlaceName = function(a, b) {
+    //   if (a.name < b.name) {
+    //     return -1;     
+    //   }
+    //   if (a.name > b.name) {
+    //     return 1;        
+    //   }
 
-    this.setState({currentItinerary: sortedItinerary});
+    //   return 0;
+    // };
+
+    // var sortedItinerary = this.state.currentItinerary;
+    // sortedItinerary.places = sortedItinerary.places.sort(sortByPlaceName);
+
+    // this.setState({currentItinerary: sortedItinerary});
 
   }
 
