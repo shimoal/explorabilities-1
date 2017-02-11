@@ -14,6 +14,7 @@ const controller = {
     const itineraryID = req.body.itineraryID;
     const itineraryName = req.body.itineraryName;
     const payload = jwt.verify(token, dbconfig.secret);
+    console.log('payload', payload);
     const itineraryItems = [];
 
     placeIDs.forEach(function(placeID) {
