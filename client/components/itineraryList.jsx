@@ -17,7 +17,7 @@ const ItineraryList = (props) => {
     var reorderButton = <button className="itinerary-btn" onClick={props.reorderItinerary}>Reorder Itinerary</button>;
   }
 
-  if (props.emailItinerary) {
+  if (props.emailItinerary /*&& props.sendMail.length === 0*/) {
     var emailButton = <button className="itinerary-btn email-btn" onClick={props.emailItinerary}>Email Itinerary</button>;
   }
 

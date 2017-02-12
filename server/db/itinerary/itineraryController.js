@@ -1,6 +1,6 @@
 const Itinerary = require('./itineraryModel.js');
 const jwt = require('jsonwebtoken');
-const dbconfig = require('../dbconfig.js');
+let dbconfig = require('../dbconfig.js');
 const mail = require('../../../sendgrid.js');
 
 //For testing

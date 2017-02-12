@@ -41,6 +41,7 @@ export default class MyPlaces extends React.Component {
             query={this.state.currentItinerary}
             list={this.state.currentItinerary.places}
             saveMessage={this.state.saveMessage}
+            // sendMail={this.state.sendMail}
             removeItem={this.removeItem.bind(this)}
             saveItinerary={this.saveItinerary.bind(this)}
             reorderItinerary={this.reorderItinerary.bind(this)}
@@ -71,6 +72,7 @@ export default class MyPlaces extends React.Component {
     this.setState({
       currentItinerary: this.state.currentItinerary,
       saveMessage: '',
+      sendMail: '',
       removedPlaces: removed
     });
   }
@@ -132,7 +134,11 @@ export default class MyPlaces extends React.Component {
       })
       .then(function(res) {
         if (res.status === 200) {
+          console.log('inside then');
           console.log('Notify email sent', res);
+          this.setState({
+            sendMail: 'Itinerary sent'
+          })
         }
       })
       .catch(function(err) {

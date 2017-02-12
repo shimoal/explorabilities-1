@@ -2,7 +2,7 @@ var sg = require('sendgrid')('SG.J_cCHNUYRmugt9Of72XyEg.Kiuj5eDns9XA5FV3Erow327u
 var helper = require('sendgrid').mail;
 
 var sendMail = function(req, res, next) {
-  // console.log('req places', req.query.itineraryPlaces);
+  console.log('req places', req.query.itineraryPlaces);
   var userName = 'Will';
   var userEmail = 'wramsey@gmail.com';
 
@@ -32,13 +32,13 @@ var sendMail = function(req, res, next) {
     body: mail.toJSON(),
   });
 
+
   sg.API(request)
   .then(response => {
     console.log(response.statusCode);
     console.log(response.body);
     console.log(response.headers);
-    response.sendStatus(200);
-    res.send('hi');
+    res.send(response).sendStatus(200);
   })
   .catch(error => {
     //error is an instance of SendGridError
