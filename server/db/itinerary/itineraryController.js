@@ -12,19 +12,19 @@ dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
 const controller = {
   save: function(req, res, next) {
     const token = req.body.token;
-    const placeIDs = req.body.placeIDs;
-    const itineraryID = req.body.itineraryID;
-    const itineraryName = req.body.itineraryName;
+    const place_ids = req.body.place_ids;
+    const itinerary_id = req.body.itinerary_id;
+    const itinerary_name = req.body.itinerary_name;
     const payload = jwt.verify(token, dbconfig.secret);
     console.log('payload', payload);
     const itineraryItems = [];
 
-    placeIDs.forEach(function(placeID) {
+    place_ids.forEach(function(place_id) {
       itineraryItems.push({
-        placeID: placeID,
-        itineraryID: itineraryID,
-        itineraryName: itineraryName,
-        userID: payload.id
+        place_id: place_id,
+        itinerary_id: itinerary_id,
+        itinerary_name: itinerary_name,
+        user_id: payload.id
       });
     });
 
@@ -45,7 +45,7 @@ const controller = {
 
     Itinerary.findAll({
       where: {
-        userID: payload.id
+        user_id: payload.id
       }
     })
     .then(function(itineraries) {
@@ -58,13 +58,13 @@ const controller = {
   },
   delete: function(req, res, next) {
     const token = req.query.token;
-    const placeIDs = req.query.placeIDs;
+    const place_ids = req.query.place_ids;
     const payload = jwt.verify(token, dbconfig.secret);
 
     Itinerary.destroy({
       where: {
-        placeID: placeIDs,
-        userID: payload.id
+        place_id: place_ids,
+        user_id: payload.id
       }
     })
     .then(function() {

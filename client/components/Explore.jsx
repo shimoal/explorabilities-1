@@ -69,9 +69,9 @@ export default class Explore extends React.Component {
 
     axios.post('/itinerary', {
       token: localStorage.token,
-      itineraryID: this.state.query.place_id,
-      itineraryName: this.state.query.name,
-      placeIDs: Object.keys(this.state.itinerary)
+      itinerary_id: this.state.query.place_id,
+      itinerary_name: this.state.query.name,
+      place_ids: Object.keys(this.state.itinerary)
     })
     .then(function(res) {
       if (res.status === 200) {
