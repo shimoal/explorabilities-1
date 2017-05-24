@@ -68,12 +68,14 @@ function requireAuth(nextState, replace, blah) {
     headers: { token: localStorage.token || null }
   })
   .then((res) => {
+    console.log('success');
     console.log(res);
     //res.data.user = user email
     //res.data.id = user id
     blah(); //requireauth doesn't exit until I'm called! I do nothing!
   })
   .catch((err) => {
+    console.log('there was an error:', err);
     replace({
       pathname: '/auth/signin',
       state: {
