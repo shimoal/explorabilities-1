@@ -29,7 +29,7 @@ var getOrderedPlaces = function(req, res, next) {
           'origin=place_id:' + startingPointId + 
           '&destination=place_id:' + startingPointId + 
           '&waypoints=optimize:true'  + places + 
-          '&key='+key, 
+          '&key='+ key, 
     function(error, response, body) {
       if (error) {
         console.log('error:', error);
