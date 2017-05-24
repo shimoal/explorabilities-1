@@ -4,10 +4,10 @@ let dbconfig = require('../dbconfig.js');
 const mail = require('../../../sendgrid.js');
 
 //For testing
-// const dbconfig = require('../dbconfig.js');
+const dbconfig = require('../dbconfig.js');
 
 //for prod
-dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
+// dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
 
 const controller = {
   save: function(req, res, next) {
