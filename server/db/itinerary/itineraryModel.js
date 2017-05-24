@@ -3,16 +3,16 @@ const db = require('../database.js');
 const User = require('../users/usersModel.js');
 
 const Itinerary = db.define('itinerary', {
-  placeID: {
+  place_id: {
     type: Sequelize.STRING
   },
-  itineraryID: {
+  itinerary_id: {
     type: Sequelize.STRING
   },
-  itineraryName: {
+  itinerary_name: {
     type: Sequelize.STRING
   },
-  userID: {
+  user_id: {
     type: Sequelize.INTEGER,
     model: 'users',
     key: 'id'

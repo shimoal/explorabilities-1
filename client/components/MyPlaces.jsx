@@ -83,9 +83,9 @@ export default class MyPlaces extends React.Component {
 
       axios({method: 'DELETE', url: '/itinerary', params: {
           token: localStorage.token,
-          itineraryID: this.state.currentItinerary.place_id,
-          itineraryName: this.state.currentItinerary.name,
-          placeIDs: this.state.removedPlaces
+          itinerary_id: this.state.currentItinerary.place_id,
+          itinerary_name: this.state.currentItinerary.name,
+          place_ids: this.state.removedPlaces
         }
       })
       .then(function(res) {
@@ -193,12 +193,12 @@ export default class MyPlaces extends React.Component {
       let first = true;
 
       data.forEach((itinerary) => {
-        let placeID = itinerary.placeID;
-        let key = itinerary.itineraryID;
-        let name = itinerary.itineraryName;
+        let place_id = itinerary.place_id;
+        let key = itinerary.itinerary_id;
+        let name = itinerary.itinerary_name;
 
         service.getDetails({
-          placeId: placeID
+          placeId: place_id
         }, (place, status) => {
           if (itineraries[key] === undefined) {
             itineraries[key] = {};

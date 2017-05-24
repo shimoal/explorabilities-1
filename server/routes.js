@@ -10,15 +10,19 @@ const cookieParser = require('cookie-parser');
 const routes = express();
 
 routes.use(express.static(__dirname + '/../public'));
+
 routes.use(cookieParser());
 routes.use(bodyParser.urlencoded({extended: false}));
 routes.use(bodyParser.json());
+
 routes.use(session({
   secret: 'mark',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
 }));
+
+
 routes.use(passport.initialize());
 routes.use(passport.session());
 
