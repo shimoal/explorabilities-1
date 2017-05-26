@@ -1,4 +1,5 @@
-var sg = require('sendgrid')('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');
+var { SG_KEY } = require('./keys');
+var sg = require('sendgrid')(SG_KEY);
 var helper = require('sendgrid').mail;
 
 var sendMail = function(req, res, next) {
