@@ -229,10 +229,9 @@ export default class MyPlaces extends React.Component {
 
     window.initMap = initMap;
     const ref = window.document.getElementsByTagName('script')[0];
-    // console.log('ref', ref);
     const script = window.document.createElement('script');
     script.src = url;
-    // console.log('parentNode', ref.parentNode);
+
     ref.parentNode.insertBefore(script, ref);
     script.onload = function () {
       this.remove();

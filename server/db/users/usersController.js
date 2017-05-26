@@ -41,10 +41,10 @@ passport.deserializeUser(function(id, done) {
 
 
 //For testing
-// const dbconfig = require('../dbconfig.js');
+const dbconfig = require('../dbconfig.js');
 
 //for prod
-const dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
+// const dbconfig = { secret: 'RnPbb8wyxmFwfuCy1glqyjguZ38JyPoo' };
 
 
 const controller = {

@@ -9,10 +9,6 @@ var findPath = function(places) {
     console.log('received response!');
   }).catch( function (err) {console.log(err);});
 
-  // places.forEach(function (place) {
-  //   console.log(place.geometry.location.lat());
-  //   console.log(place.geometry.location.lng());
-  // });
 };
 
 module.exports = {findPath: findPath};
