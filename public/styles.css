@@ -50,6 +50,10 @@ button {
   font-size: 14px;
 }
 
+#myplace-map {
+  float: left;
+}
+
 .container {
   width: 980px;
   min-height: 100%;

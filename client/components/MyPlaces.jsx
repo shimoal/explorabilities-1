@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import bluebird from 'bluebird';
 import ItineraryList from './itineraryList.jsx';
+import Map from './Map.jsx';
 
 export default class MyPlaces extends React.Component {
   constructor(props) {
@@ -14,7 +15,11 @@ export default class MyPlaces extends React.Component {
         coordinates: []
       },
       saveMessage: '',
-      removedPlaces: []
+      removedPlaces: [],
+      mapSettings: {
+        center: {lat: 33.321, lng: -100.32},
+        zoom: 12
+      }
     };
   }
 
@@ -36,6 +41,8 @@ export default class MyPlaces extends React.Component {
               </div>
             </div>
 
+            <Map mapSettings={this.state.mapSettings}/>
+
           </div>
           <ItineraryList
             query={this.state.currentItinerary}
@@ -45,10 +52,7 @@ export default class MyPlaces extends React.Component {
             removeItem={this.removeItem.bind(this)}
             saveItinerary={this.saveItinerary.bind(this)}
             reorderItinerary={this.reorderItinerary.bind(this)}
-            emailItinerary={this.emailItinerary.bind(this)}
-          />
-          <div id="map"></div>
-          <div id="map2"></div>
+            emailItinerary={this.emailItinerary.bind(this)}/>
         </div>
       </div>
     );
@@ -187,7 +191,7 @@ export default class MyPlaces extends React.Component {
     const itineraries = {};
     const context = this;
 
-    this.buildMap(setItineraries);
+    // this.buildMap(setItineraries);
 
     function setItineraries(service) {
       let first = true;
@@ -223,35 +227,35 @@ export default class MyPlaces extends React.Component {
     }
   }
 
-  buildMap(callback) {
-    const key = 'AIzaSyCBb0bm-_wNIf3oDMi-5PN_zeOf1bRWstI';
-    const url = 'https://maps.googleapis.com/maps/api/js?key=' + key + '&libraries=places&callback=initMap';
+  // buildMap(callback) {
+  //   const key = 'AIzaSyCBb0bm-_wNIf3oDMi-5PN_zeOf1bRWstI';
+  //   const url = 'https://maps.googleapis.com/maps/api/js?key=' + key + '&libraries=places&callback=initMap';
 
-    window.initMap = initMap;
-    const ref = window.document.getElementsByTagName('script')[0];
-    const script = window.document.createElement('script');
-    script.src = url;
+  //   window.initMap = initMap;
+  //   const ref = window.document.getElementsByTagName('script')[0];
+  //   const script = window.document.createElement('script');
+  //   script.src = url;
 
-    ref.parentNode.insertBefore(script, ref);
-    script.onload = function () {
-      this.remove();
-    };
+  //   ref.parentNode.insertBefore(script, ref);
+  //   script.onload = function () {
+  //     this.remove();
+  //   };
 
-    function initMap() {
-      const map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 37.775, lng: -122.42 },
-        zoom: 8,
-        zoomControl: true,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        rotateControl: false,
-        fullscreenControl: false
-      });
+  //   function initMap() {
+  //     const map = new google.maps.Map(document.getElementById('map'), {
+  //       center: { lat: 37.775, lng: -122.42 },
+  //       zoom: 8,
+  //       zoomControl: true,
+  //       mapTypeControl: false,
+  //       scaleControl: false,
+  //       streetViewControl: false,
+  //       rotateControl: false,
+  //       fullscreenControl: false
+  //     });
 
-      const service = new google.maps.places.PlacesService(map);
+  //     const service = new google.maps.places.PlacesService(map);
 
-      callback(service);
-    }
-  }
+  //     callback(service);
+  //   }
+  // }
 }

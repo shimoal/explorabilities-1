@@ -18,8 +18,8 @@ ReactDOM.render(
     </Route>
     <Route path="/" component={App}>
       <IndexRedirect to="/explore" />
-      <Route path="/explore" component={Explore} onEnter={requireAuth}/>
-      <Route path="/myplaces" component={MyPlaces} onEnter={requireAuth}/>
+      <Route path="/explore" component={Explore} />
+      <Route path="/myplaces" component={MyPlaces} />
     </Route>
   </Router>, document.getElementById('app'));
 

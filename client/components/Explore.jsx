@@ -12,14 +12,23 @@ export default class Explore extends React.Component {
       place: {},
       query: '',
       itinerary: {},
-      saveMessage: ''
+      saveMessage: '',
+      mapSettings: {
+        center: {lat: 37.775, lng: -122.42},
+        zoom: 8,
+        zoomControl: true,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false
+      }
     };
   }
   render() {
     return (
       <div id="exploreContainer">
-        <Map /> 
-        {/*<MapContainer updatePlace={this.updatePlace.bind(this)} updateQuery={this.updateQuery.bind(this)}/> */}
+        <Map mapSettings={this.state.mapSettings}/> 
         <div id="exploreContent" className="clearfix">
           <Place place={this.state.place} addItem={this.addItem.bind(this)}/>
           <ItineraryList

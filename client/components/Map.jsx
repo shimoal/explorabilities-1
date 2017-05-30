@@ -6,13 +6,12 @@ export default class Map extends React.Component {
     super(props);
   }
 
-
   componentDidMount() {
-    console.log('inisde componenetDidMount');
-    this.map = new google.maps.Map(this.refs.map, {
-      center: {lat: 37.775, lng: -122.42},
-      zoom: 8
-    });
+    this.initMap();
+  }
+
+  initMap() {
+    map = new google.maps.Map(this.refs.map, this.props.mapSettings);
   }
 
   render() {
