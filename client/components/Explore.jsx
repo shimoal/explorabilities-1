@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import MapContainer from './MapContainer.jsx';
+import Map from './Map.jsx';
 import Place from './Place.jsx';
 import ItineraryList from './itineraryList.jsx';
 
@@ -18,7 +18,8 @@ export default class Explore extends React.Component {
   render() {
     return (
       <div id="exploreContainer">
-        <MapContainer updatePlace={this.updatePlace.bind(this)} updateQuery={this.updateQuery.bind(this)}/>
+        <Map /> 
+        {/*<MapContainer updatePlace={this.updatePlace.bind(this)} updateQuery={this.updateQuery.bind(this)}/> */}
         <div id="exploreContent" className="clearfix">
           <Place place={this.state.place} addItem={this.addItem.bind(this)}/>
           <ItineraryList
