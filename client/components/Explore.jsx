@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Map from './Map.jsx';
 import Place from './Place.jsx';
+import SearchBar from './SearchBar.jsx';
 import ItineraryList from './itineraryList.jsx';
 
 export default class Explore extends React.Component {
@@ -28,6 +29,7 @@ export default class Explore extends React.Component {
   render() {
     return (
       <div id="exploreContainer">
+        <SearchBar />
         <Map mapSettings={this.state.mapSettings}/> 
         <div id="exploreContent" className="clearfix">
           <Place place={this.state.place} addItem={this.addItem.bind(this)}/>
