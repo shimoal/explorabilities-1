@@ -16,7 +16,7 @@ export default class Map extends React.Component {
 
   render() {
     return (
-      <div id="googleMaps" ref="map"></div>
+      <div id="mapEmbed" ref="map"></div>
     )
   }
 }

@@ -27,7 +27,7 @@ export default class MyPlaces extends React.Component {
     return (
       <div id="myPlacesContainer">
         <div id="myPlacesContent" className="clearfix">
-          <div>
+          <div >
             <div id="itineraries">
               <div className="clearfix">
                 <h3 className="itineraryHeader">Itineraries</h3>
@@ -39,9 +39,10 @@ export default class MyPlaces extends React.Component {
                   </button>
                 ))}
               </div>
+              
+              <Map mapSettings={this.state.mapSettings}/>
             </div>
 
-            <Map mapSettings={this.state.mapSettings}/>
 
           </div>
           <ItineraryList
